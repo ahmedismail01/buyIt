@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 
 const categorySchema = mongoose.Schema({
-    name : String,
-    description : String,
+    name : {type : String , required : true},
+    description : {type : String , required : true},
     photos : [{
         path : String,
     }]

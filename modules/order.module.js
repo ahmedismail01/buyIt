@@ -4,7 +4,8 @@ const mongoose = require("mongoose")
 const orderSchema = mongoose.Schema({
     userId : {
         type : mongoose.Types.ObjectId,
-        ref : "users"
+        ref : "users",
+        required : true
     },
     items: [
         {
@@ -14,9 +15,9 @@ const orderSchema = mongoose.Schema({
             total: Number,
         },
     ],
-    // shipping Address
-    shippingFees : Number,
-    totalPrice : Number,
+    shippingAddress : {type : String , required : true},
+    shippingFees : {type : Number , required : true},
+    totalPrice : {type : Number , required : true},
     shippingAgent : {
         type : mongoose.Types.ObjectId,
         ref : "users"

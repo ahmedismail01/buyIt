@@ -1,22 +1,23 @@
 const mongoose = require('mongoose')
 
 const productSchema = mongoose.Schema({
-    name : String,
+    name : {type : String , required : true},
     sellerId : {
         type : mongoose.Types.ObjectId,
         ref : "users"
     },
-    price : Number,
+    price : {type : String , required : true},
     photos : [{
         path : String,
     }],
     color : String,
     weight : Number,
-    discount : Number,
-    quantity : Number,
+    discount : {type : Number , required : false , default : 0},
+    quantity : {type : Number , required : true},
     categories : [{
         type : mongoose.Types.ObjectId,
-        ref : "categorys"
+        ref : "categorys",
+        required : true
     }],
 })
 

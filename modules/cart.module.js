@@ -16,7 +16,6 @@ const categorySchema = mongoose.Schema({
     ],
     discount: Number,
     totalPrice: Number,
-    // cobon
 })
 
 
