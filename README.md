@@ -1,2 +1,2 @@
 # buyIt
-e-commerce project 
+e-commerce project
