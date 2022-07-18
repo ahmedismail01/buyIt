@@ -11,4 +11,4 @@ const couponSchema = mongoose({
     discount : {type : Number , required : true}
 })
 
-module.exports.couponModel = mongoose.model("coupon" , couponSchema)
+module.exports = couponModel = mongoose.model("coupon" , couponSchema)
