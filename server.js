@@ -1,11 +1,11 @@
 require("dotenv").config();
 const express = require('express')
 const app = express()
-
-const route = require("./route/user.route")
-const User = require("./modules/user.module")
 const connection = require("./connection/dbConnection")
 connection()
+
+const route = require("./route/index")
+
 
 
 app.use(express.json())

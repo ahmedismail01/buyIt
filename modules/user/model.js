@@ -6,7 +6,7 @@ const userSchema = mongoose.Schema({
     email : {type : String , required : true},
     address : {type : String },
     isActive : {type : Boolean },
-    whishlist : [{ 
+    wishlist : [{ 
         type : mongoose.Types.ObjectId,
         ref : "product"
     }],
@@ -24,5 +24,6 @@ const userSchema = mongoose.Schema({
 })
 
 
-module.exports.userModel = mongoose.model( "User" , userSchema)
+const userModel = mongoose.model( "user" , userSchema)
+module.exports = userModel
 

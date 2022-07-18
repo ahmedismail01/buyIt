@@ -4,14 +4,18 @@ const productSchema = mongoose.Schema({
     name : {type : String , required : true},
     sellerId : {
         type : mongoose.Types.ObjectId,
-        ref : "users"
+        ref : "users",
+        required : true
     },
-    price : {type : String , required : true},
+    price : {type : Number , required : true},
     photos : [{
         path : String,
     }],
-    color : String,
-    weight : Number,
+    colors : [{
+        type :String,
+        required : false
+    }],
+    weight : {type : String , required : false},
     discount : {type : Number , required : false , default : 0},
     quantity : {type : Number , required : true},
     categories : [{
@@ -21,4 +25,4 @@ const productSchema = mongoose.Schema({
     }],
 })
 
-module.exports.productModel = mongoose.model("product" , productSchema)
+module.exports = productModel = mongoose.model("product" , productSchema)
