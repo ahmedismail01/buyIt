@@ -5,14 +5,24 @@ const list = ( ) => {
 const find = (id) => {
     return Product.findOne({ _id : id })
 }
-const add = (request) =>{
-    const product = new Product(request)
+const add = (req) =>{
+    console.log(req)
+    const product = new Product({
+        name : req.body.name,
+        sellerId : req.body.sellerId,
+        price : req.body.price,
+        color : req.body.color,
+        photos : req.files,
+        discount : req.body.discount,
+        quantity : req.body.quantity,
+        categories : req.body.categories
+    })
     product.save()
     return {
         message : 'done'
     }
 }
-const remove = (id) =>{
+const remove = async (id) =>{
     const product = await Product.findByIdAndDelete({_id : id})
     return {
         message : "deleted",

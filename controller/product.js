@@ -26,7 +26,7 @@ const deleteProduct = async (req,res) => {
     res.json({messages})
 }
 const addProduct = async (req,res) => {
-    const messages = await add(req.body)
+    const messages = await add(req)
     res.json(messages)
 }
 
