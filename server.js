@@ -1,8 +1,11 @@
 require("dotenv").config();
 const express = require('express')
 const app = express()
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
 const connection = require("./connection/dbConnection")
 connection()
+
 
 const route = require("./route/index")
 
