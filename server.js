@@ -1,19 +1,14 @@
 require("dotenv").config();
 const express = require('express')
 const app = express()
-const multer  = require('multer')
-const upload = multer({ dest: 'uploads/' })
+const sessionAuth = require('./modules/user/helpers/sessions.auth')
 const connection = require("./connection/dbConnection")
+const route = require("./route/index")
 connection()
 
-
-const route = require("./route/index")
-
-
-
 app.use(express.json())
+app.use(sessionAuth)
 app.use(route)
-
 
 app.listen(process.env.PORT,()=>{
     console.log(`server is running on port ${process.env.PORT}`)
