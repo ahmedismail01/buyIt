@@ -5,7 +5,7 @@ const connection = ( ) => {
     .then(( ) => {
         console.log("connection succeded")
     } ).catch((err) => {
-        console.log("shit happend in connection")
+        console.log("happend in connection" , err)
     })
 }
 module.exports = connection

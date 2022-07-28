@@ -1,21 +1,39 @@
 const Product = require('./model')
-const list = ( ) => {
-    return Product.find({})
+
+
+
+
+
+
+const isExists = async (query) => {
+    const object = await Product.findOne(query)
+    if (object) return {
+        success : true ,
+        body : object
+    }
+    return false 
 }
-const find = (id) => {
-    return Product.findOne({ _id : id })
+
+
+
+const list = async (query) => {
+    if(query) return await Product.find(query)
+    return await Product.find({})
 }
-const add = (req) =>{
-    console.log(req)
+const get = async (query) => {
+   if (query) return Product.findOne(query)
+   else return { message : "you have to send query"}
+}
+const create = (form) =>{
     const product = new Product({
-        name : req.body.name,
-        sellerId : req.body.sellerId,
-        price : req.body.price,
-        color : req.body.color,
-        photos : req.files,
-        discount : req.body.discount,
-        quantity : req.body.quantity,
-        categories : req.body.categories
+        name : form.body.name,
+        sellerId : form.body.sellerId,
+        price : form.body.price,
+        colors : form.body.colors,
+        photos : form.files,
+        discount : form.body.discount,
+        quantity : form.body.quantity,
+        categories : form.body.categories
     })
     product.save()
     return {
@@ -23,23 +41,36 @@ const add = (req) =>{
     }
 }
 const remove = async (id) =>{
-    const product = await Product.findByIdAndDelete({_id : id})
-    return {
-        message : "deleted",
-        product : product
+    const productExists = await isExists({_id : id})
+    if ( productExists) {
+        await Product.findByIdAndDelete({_id : id})
+        return {
+            message : "deleted",
+        }
+    }else {
+        return {
+            message : "product not found"
+        }
     }
 }
-const update = async (req) => {
-    const id = req.params.productId
-    const {name , price , color, weight , quantity ,discount , category} = req.body
-    const product = await Product.findByIdAndUpdate({_id : id}, {name ,category , discount , quantity , weight , color,price})
-    return product
+const update = async (productId , form) => {
+    const productExists = await isExists({_id : productId})
+    if ( productExists) {
+        await Product.findByIdAndUpdate({_id : productId} , form)
+        return {
+            message : "done",
+        }
+    }else {
+        return {
+            message : "product not found"
+        }
+    }
 }
 
 module.exports = {
     list,
-    find,
-    add,
+    get,
+    create,
     remove,
     update
 }
