@@ -1,60 +1,84 @@
 const repo = require("../modules/user/repo")
-
+const hour = 3600000
 const {sendMail} = require('../helpers/email')
 
 
 const getAllUsers = async (req,res) => {
     const users = await repo.list()
-
     res.status(201).json({message : "success", users : users})
 }
 
 const register = async (req,res)=> {
-    const user = await repo.add(req.body)
+    const message = await repo.create(req.body)
+    if (message.success) {
     const theToken = Math.random()*10000
-    req.session.user = user
+    req.session.user = message.user
     req.session.token = theToken
     req.session.save();
-    const email = `http://localhost:8080/activation/${theToken}`
+    const email = `http://localhost:8080/api/v1/user/activation/${theToken}`
     const subject = "activate your email"
     const text = "click the link  to activate your email"
     const html = `<a>${email}</a>`
     await sendMail(req.body.email ,subject,text,html)
     res.status(201).json({ message : "activate your email"})
+    }else {
+        res.json({message : "this email already exists" })
+    }
 }
 
 
 
 const updateUser = async (req,res) => {
-    const user = await repo.update(req)
-    res.json(user)
+    const userId = req.params.userId
+    const form = req.body
+    const message = await repo.update(userId , form)
+    if (message.success) {
+        user = message.user
+        res.json(user)
+    }else {
+        res.json(message)
+    }
+    
 }
 
 
 
 const login = async (req,res) => {
-    const isValid = await repo.login(req)
-    res.json(isValid)
+    const isCorrect = await repo.comparePassword(req.body.email , req.body.password)
+    if (isCorrect.success) {
+        const user = isCorrect.user 
+        req.session.cookie.expires = new Date(Date.now() + hour)
+        req.session.user = user.body 
+        await req.session.save()
+        res.json(isCorrect.message)
+    }else {
+        res.json(isCorrect.message)
+    }
+    
 }
 
 const getUser = async  (req,res) => {
-    const user = await repo.find(req.params.userId)
+    const user = await repo.get({_id :req.params.userId})
     if (user) res.json({message : "success" , user})
     else res.json({message : "not found"})
 }
 
 const getUserWishlist = async (req,res) => {
-    const message = await repo.getWishlist(req)
-    res.json(message)
+    const user = await repo.get({ _id : req.params.userId})
+    if (user) res.json({message : "success" , wishlist : user.wishlist})
+     res.json({message : "not found"})
 }
 const addCreditCard = async (req,res) => {
-    const body = await repo.addCreditCard(req)
+    const userId = req.session.user._id
+    const card = req.body
+    const body = await repo.get({card , userId})
     res.json(body)
 }
 
 const getCreditCards = async (req,res) => {
-    const creditCards = await repo.getCreditCards(req)
-    res.json(creditCards)
+    const user = await repo.get({ _id : req.params.userId})
+    if (user) res.json({message : "success" , wishlist : user.creditCards})
+    res.json({message : "not found"})
 }
 const addProduct = async (req,res) => {
     const productId = req.params.productId
@@ -63,13 +87,17 @@ const addProduct = async (req,res) => {
     res.json(updatedUser)
 }
 const signOut = async (req,res) => {
-    const message = await repo.signOut(req)
-    res.json(message)
+        if (req.session)
+            req.session.destroy();
+    res.json({
+        status : 201,
+        message : 'done'
+    })
 }
 const deleteProdcut = async (req,res) => {
     const productId = req.params.productId
     const userId = req.session.user._id
-    const message = await repo.deleteProductFromWishlist(userId , productId)
+    const message = await repo.deleteFromWishlist(userId , productId)
     res.json(message)
 }
 
@@ -80,8 +108,12 @@ const deleteCreditcard = async (req,res) => {
     res.json(message)
 }
 const activation = async (req,res) => {
-    const message = await repo.activation(req)
-    res.json(message)
+    if (req.params.token == req.session.token){
+        await repo.update(req.session.user._id , {isActive : true})
+        res.json({message : "activated"})
+    }else{
+        res.json({message : "wrong token"})
+    }
 }
 
 

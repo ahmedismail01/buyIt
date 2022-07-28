@@ -1,8 +1,8 @@
-const {list , find , add , remove,update} = require('../modules/product/repo')
+const {list , get , create , remove,update} = require('../modules/product/repo')
 
 
 
-const getAllProdcuts = async (req,res) => {
+const listProdcuts = async (req,res) => {
     const products = await list()
     res.status(201).json({message : "success", products})
 }
@@ -10,13 +10,13 @@ const getAllProdcuts = async (req,res) => {
 
 
 const updateProduct = async (req,res) => {
-    const product = await update(req)
+    const product = await update(req.params.productId , req.body)
     res.json(product)
 }
 
 
 const getProduct = async  (req,res) => {
-    const product = await find(req.params.productId)
+    const product = await get({_id : req.params.productId})
     if (product) res.json({message : "success" , product})
     else res.json({message : "not found"})
 }
@@ -26,14 +26,14 @@ const deleteProduct = async (req,res) => {
     res.json({messages})
 }
 const addProduct = async (req,res) => {
-    const messages = await add(req)
+    const messages = await create(req)
     res.json(messages)
 }
 
 
 
 module.exports = {
-    getAllProdcuts,
+    listProdcuts,
     getProduct,
     updateProduct,
     deleteProduct,
