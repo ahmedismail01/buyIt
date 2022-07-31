@@ -25,16 +25,8 @@ const get = async (query) => {
    else return { message : "you have to send query"}
 }
 const create = (form) =>{
-    const product = new Product({
-        name : form.body.name,
-        sellerId : form.body.sellerId,
-        price : form.body.price,
-        colors : form.body.colors,
-        photos : form.files,
-        discount : form.body.discount,
-        quantity : form.body.quantity,
-        categories : form.body.categories
-    })
+    // isExists **same seller
+    const product = new Product(form)
     product.save()
     return {
         message : 'done'

@@ -14,6 +14,10 @@ const categorySchema = mongoose.Schema({
             total: Number,
         },
     ],
+    coupon : {
+        type :mongoose.Types.ObjectId, 
+        ref : "coupon"
+    },
     discount: Number,
     totalPrice: Number,
 })

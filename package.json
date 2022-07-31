@@ -2,7 +2,7 @@
   "name": "y",
   "version": "1.0.0",
   "description": "e-commerce project",
-  "main": "server.js",
+  "main": "./config/server.js",
   "scripts": {
     "start": "nodemon"
   },
