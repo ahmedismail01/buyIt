@@ -1,9 +1,9 @@
 require("dotenv").config();
 const express = require('express')
 const app = express()
-const sessionAuth = require('./helpers/sessions.auth')
-const connection = require("./connection/dbConnection")
-const route = require("./route/index")
+const sessionAuth = require('../helpers/sessions.auth')
+const connection = require("./dbConnection")
+const route = require("../route/index")
 connection()
 
 app.use(express.json())

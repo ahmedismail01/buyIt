@@ -3,6 +3,7 @@ const userController = require('../../controller/user')
 const checkAuth = require('../../utils/checkAuth')
 const validator = require('../../utils/common.validate')
 const {register,login} = require('../../helpers/userValidation')
+
  
 app.get("/getAllUsers" ,checkAuth,userController.getAllUsers)
 app.get("/getUser/:userId" , checkAuth,userController.getUser)
@@ -17,5 +18,6 @@ app.post("/deleteCreditcard/:creditId" , checkAuth , userController.deleteCredit
 app.post("/deleteProduct/:productId" , checkAuth , userController.deleteProdcut)
 app.post("/addProduct/:productId" , checkAuth , userController.addProduct)
 app.post("/activation/:token" , checkAuth , userController.activation)
+app.delete("/:userId" , checkAuth , userController.removeUser)
 
 module.exports = app

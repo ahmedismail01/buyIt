@@ -12,7 +12,7 @@ const register = async (req,res)=> {
     const message = await repo.create(req.body)
     if (message.success) {
     const theToken = Math.random()*10000
-    req.session.user = message.user
+    req.session.user = message.record
     req.session.token = theToken
     req.session.save();
     const email = `http://localhost:8080/api/v1/user/activation/${theToken}`
@@ -46,13 +46,17 @@ const updateUser = async (req,res) => {
 const login = async (req,res) => {
     const isCorrect = await repo.comparePassword(req.body.email , req.body.password)
     if (isCorrect.success) {
-        const user = isCorrect.user 
-        req.session.cookie.expires = new Date(Date.now() + hour)
-        req.session.user = user.body 
-        await req.session.save()
-        res.json(isCorrect.message)
+        const user = isCorrect.record
+        if(user.isActive) {
+            req.session.cookie.expires = new Date(Date.now() + hour)
+            req.session.user = user
+            await req.session.save()
+            res.json({message : "you have logged in"})
+        }else{
+            res.json({message : "activate your account first"})
+        }
     }else {
-        res.json(isCorrect.message)
+        res.json({message : isCorrect.message})
     }
     
 }
@@ -71,7 +75,7 @@ const getUserWishlist = async (req,res) => {
 const addCreditCard = async (req,res) => {
     const userId = req.session.user._id
     const card = req.body
-    const body = await repo.get({card , userId})
+    const body = await repo.addCreditCard(card , userId)
     res.json(body)
 }
 
@@ -115,6 +119,9 @@ const activation = async (req,res) => {
         res.json({message : "wrong token"})
     }
 }
+const removeUser = async (req,res) => {
+    res.json(await repo.remove(req.params.userId))
+}
 
 
 module.exports = {
@@ -130,5 +137,6 @@ module.exports = {
     deleteCreditcard,
     deleteProdcut,
     addProduct,
-    activation
+    activation,
+    removeUser
 }

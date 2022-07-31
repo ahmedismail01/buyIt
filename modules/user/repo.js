@@ -7,23 +7,15 @@ const isExists = async (query) => {
     const object = await User.findOne(query)
     if (object) return {
         success : true ,
-        body : object
+        record : object,
+        status : 200
     }
-    return false 
-}
-const isCreditcardInArray = async (userId,query) => {
-    const object = await User.findOne({
-        _id : userId,
-        "creditCards" : {$elemMatch:query}
-    })
-    if(object ) {
     return {
-        success : true,
-        body : object
-    }}else {
-        return false
-    }
+        success :false,
+        status : 404
+     }
 }
+
 
 const list = async (query) => {
     if (query) return await User.find(query)
@@ -35,17 +27,17 @@ const get = async (query) => {
 }
 const create = async (form) =>{ 
     const email = await isExists({email : form.email})
-    if (email) return false
+    if (email.success) return {success : false,message : "this email already exists"}
     else {const user = await  new User(form)
     await user.save()
     return {
         success : true ,
-        user : user
+        record : user
     }}
 }
 const remove = async (id) =>{
-    const isexists = await isExists({_id , id})
-    if (isexists) {
+    const isexists = await isExists({_id : id})
+    if (isexists.success) {
         await User.findByIdAndDelete({_id : id})
         return { message : "user deleted"}
     }else{
@@ -56,11 +48,11 @@ const remove = async (id) =>{
 }
 const update = async ( id,form) => { 
     const isUserExists = await isExists({_id : id})
-    if (isUserExists) {
+    if (isUserExists.success) {
         const user = await User.findByIdAndUpdate({_id : id} , form)
         return {
                 success : true ,
-                user : user 
+                record : user 
             } 
     }else {
         return {success : false ,
@@ -70,13 +62,12 @@ const update = async ( id,form) => {
 const comparePassword = async (email , password) => {
     const user = await isExists({email : email})
     
-    if (user) {
-        const isMatched = await bcrypt.compare(password, user.body.password)
+    if (user.success) {
+        const isMatched = await bcrypt.compare(password, user.record.password)
         if (isMatched) {
             return {
                     success : true,
-                    message : "you have logged in",
-                    user : user
+                    record : user.record
                 }
 
         }else {
@@ -93,11 +84,11 @@ const comparePassword = async (email , password) => {
 }
 
 
-const addCreditCard = async (card , id) => {    
-    const isUserExists = await isExists({_Id : id})
-    const creditExists = await isCreditcardInArray( id ,{creditCardNo : card.creditCardNo })
-    if(isUserExists){
-        if (creditExists) {
+const addCreditCard = async (card , id) => {
+    const user = await isExists({_id : id})
+    if(user.success){
+        const oldCard = await user.record.creditCards.find(o => o.creditCardNo === card.creditCardNo)
+        if (oldCard) {
             return {message : "this creditcard already exists"}
         }else{
             await User.findByIdAndUpdate({ _id : id} ,{$push : {creditCards : card}})
@@ -113,10 +104,10 @@ const addCreditCard = async (card , id) => {
     }
 }
 const deleteCreditCard = async (userId , creditCardId) => {
-    const isUserExists = await isExists({_Id : userId})
-    const creditExists = await isExists({_id : userId , creditCards :{$elemMatch:{_id :creditCardId}}})
-    if(isUserExists){
-        if (creditExists) {
+    const user = await isExists({_Id : userId})
+    if(user.success){
+        const card = await isExists({_id : userId , creditCards :{$elemMatch:{_id :creditCardId}}})
+        if (card.success) {
             await User.findByIdAndUpdate({ _id : userId} ,{$pull : {creditCards : {_id : creditCardId}}})
             return {
                 message : "deleted",
@@ -138,16 +129,16 @@ const addToWishlist = async (userId,productId) =>{
     const isUserExists = await isExists({_Id : userId})
     const query = {wishlist : productId }
     const productExists = await isExists({_id : userId , wishlist : productId})
-    if (isUserExists) {
-            if (productExists) return {message : "this product already exists in the wishlist"} 
-        else 
-        {
+    if (isUserExists.success) {
+            if (productExists.success){
+                return {message : "this product already exists in the wishlist"}
+            } else {
                 await User.findByIdAndUpdate({_id : userId}, {$push : query})
                 return {
                     message : "done"
                 }
             }
-    }else {
+    }else{
         return {message : "user doesnt exists"}
     }
 }
@@ -186,6 +177,4 @@ module.exports = {
     addToWishlist,
     deleteFromWishlist,
     deleteCreditCard,
-    // signOut,
-    // activation
 }
