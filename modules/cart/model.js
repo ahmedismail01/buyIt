@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 
-const categorySchema = mongoose.Schema({
+const cartSchema = mongoose.Schema({
     userId: {
         type: mongoose.Types.ObjectId,
         ref: "users"
@@ -23,4 +23,4 @@ const categorySchema = mongoose.Schema({
 })
 
 
-module.exports = categorySchema = mongoose.model("category", categorySchema)
+module.exports = cartModel = mongoose.model("cart", cartSchema)
