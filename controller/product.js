@@ -26,7 +26,17 @@ const deleteProduct = async (req,res) => {
     res.json({messages})
 }
 const addProduct = async (req,res) => {
-    const messages = await create(req)
+    const form = {
+        name : req.body.name,
+        sellerId : req.body.sellerId,
+        price : req.body.price,
+        colors : req.body.colors,
+        photos : req.files,
+        discount : req.body.discount,
+        quantity : req.body.quantity,
+        category : req.body.category
+    }
+    const messages = await create(form)
     res.json(messages)
 }
 

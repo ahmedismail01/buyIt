@@ -88,7 +88,7 @@ const addProduct = async (req,res) => {
     const productId = req.params.productId
     const userId = req.session.user._id
     const updatedUser = await repo.addToWishlist(userId,productId)
-    res.json(updatedUser)
+    res.json({message : updatedUser})
 }
 const signOut = async (req,res) => {
         if (req.session)
