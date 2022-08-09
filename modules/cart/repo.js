@@ -20,7 +20,7 @@ const product = require("../product/repo")
 //         form.items[i].total = form.items[i].price * form.items[i].quantity
 //         orderTotalPrice = orderTotalPrice + form.items[i].total
 //     } 
-//     console.log(form)
+//     
 //     totalPrice = await calculateTotal(form)
 //     form.totalPrice = totalPrice
 //     const cart = await new Cart(form)
@@ -108,7 +108,7 @@ const removeItem = async (cart , productId , quantity) => {
         const isProductInCart = await isItemInCart(isCartExists.record , productId)
         if(isProductInCart.success) {
             const cartProduct = isProductInCart.record
-            if(quantity >= cartProduct.quantity){
+            if(quantity >= cartProduct.quantity){ 
                 await Cart.updateOne({userId : cart} , {$pull : {items : {product : productId}}})
                 await product.update(productId , {quantity : productObject.quantity + quantity})
                 newCart = await get({userId : cart})
@@ -148,12 +148,7 @@ const flush = async (userId) => {
     }
 }
 
-// addItem(cart , product , quantity) ##
-// removeItem 
-// flush
-// calculateTotal (cart) repo coupon get ##
-// isElementInCart
-// createOrder controller cartId + flush
+
 
 
 const isExists = async (filter) => {
@@ -183,6 +178,7 @@ const isItemInCart = async (cart, product) => {
             return {
                 success: true,
                 record: items[i],
+                index : i,
                 code: 200
             };
         }else{
@@ -190,9 +186,7 @@ const isItemInCart = async (cart, product) => {
         }
     }
 }
-const createOrder = async (userId) => {
 
-}
 module.exports = {
     // create,
     list,

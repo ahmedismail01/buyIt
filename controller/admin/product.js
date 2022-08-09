@@ -1,4 +1,4 @@
-const {list , get , create , remove,update} = require('../modules/product/repo')
+const {list , get , create , remove,update} = require('../../modules/product/repo')
 
 
 

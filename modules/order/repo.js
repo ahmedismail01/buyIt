@@ -1,6 +1,6 @@
 const Order = require('./model')
 
-const create = async (form ) => {
+const create = async (form) => {
     const object = await new Order(form)
     object.save()
     return { success : true}
@@ -11,7 +11,7 @@ const list = async (query) => {
 }
 
 const get = async (query) => {
-    if(query) return Order.findOne(query)
+    if(query) return await Order.findOne(query)
     else return {message : "pls send a query"}
 }
 
