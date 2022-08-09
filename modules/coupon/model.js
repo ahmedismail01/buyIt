@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const couponSchema = mongoose({
+const couponSchema = mongoose.Schema({
     userId :{
         type : mongoose.Types.ObjectId,
         req : "users",

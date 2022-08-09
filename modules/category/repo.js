@@ -1,35 +1,35 @@
-const Coupon = require('./model')
+const Category = require('./model')
 
 const list = async (query) => {
-    if (query) return await Coupon.find(query)
-    else return await Coupon.find({})
+    if (query) return await Category.find(query)
+    else return await Category.find({})
 }
 
 const get = async (query) => {
-    if (query) return await Coupon.findOne(query)
+    if (query) return await Category.findOne(query)
     else return { message : "send a query"}
 }
 
 const create = async (form) => {
-    const coupon = await new Coupon(form)
-    coupon.save()
+    const category = await new Category(form)
+    category.save()
     return {success : true}   
 }
 
-const remove = async (couponId) => {
-    if(await isExists({_id : couponId})){
-        await Coupon.findByIdAndDelete({_id : couponId})
+const remove = async (categoryId) => {
+    if(await isExists({_id : categoryId})){
+        await Category.findByIdAndDelete({_id : categoryId})
         return {success : true}
     }else {
-        return {message : "coupon not fount"}
+        return {message : "category not fount"}
     }
 }
 
-const update = async (couponId , form) => {
+const update = async (categoryId , form) => {
     
-    const coupon = await isExists({_id : couponId})
-    if(coupon.success) {
-        await Coupon.findByIdAndUpdate({_id : couponId} , form)
+    const category = await isExists({_id : categoryId})
+    if(category.success) {
+        await Category.findByIdAndUpdate({_id : categoryId} , form)
         return {
             success : true 
         }
@@ -42,7 +42,7 @@ const update = async (couponId , form) => {
 }
 
 const isExists = async (query) => {
-    const exists = await Coupon.findOne(query)
+    const exists = await Category.findOne(query)
     if (exists) {
         return {
             success : true ,
@@ -64,4 +64,3 @@ module.exports = {
     remove,
     update
 }
-
