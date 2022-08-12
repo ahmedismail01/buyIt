@@ -1,7 +1,7 @@
 const app = require('express').Router()
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
-const controller = require('../../controller/user/product')
+const controller = require('../../controller/admin/product')
 const checkAuth = require('../../utils/checkAuth')
 
 app.get('/' ,checkAuth ,controller.listProdcuts)

@@ -1,6 +1,6 @@
 const Cart = require('./model')
 const product = require("../product/repo")
-
+const coupon = require('../coupon/repo')
 
 
 
@@ -29,8 +29,8 @@ const product = require("../product/repo")
 // }
 
 const list = async (query) => {
-    if(query)return await Order.find(query)
-    return await Order.find({})
+    if(query)return await Cart.find(query)
+    return await Cart.find({})
 }
 
 const get = async (query) => {
@@ -103,6 +103,7 @@ const addItem = async (cart , productId , quantity) => {
 
 const removeItem = async (cart , productId , quantity) => {
     const isCartExists = await isExists({userId : cart})
+    console.log(isCartExists)
     const productObject = await product.get({_id : productId})
     if (isCartExists.record) {
         const isProductInCart = await isItemInCart(isCartExists.record , productId)
@@ -165,6 +166,7 @@ const isExists = async (filter) => {
         await cart.save();
         return {
             success: true,
+            record : cart,
             code: 200
         };
     }
@@ -186,14 +188,46 @@ const isItemInCart = async (cart, product) => {
         }
     }
 }
+const addCoupon = async (couponId, userId) => {
+    const cart = await get({userId : userId})
+    const oldTotal = await calculateTotal(cart)
+    const couponExists = await coupon.isExists({_id : couponId})
+    if(couponExists) {
+        const coupon = await coupon.get({_id : couponId})
+        if (coupon.quantity > 0) {
+            const discount = coupon.discount
+            const newTotal = oldTotal * (discount/100)
+            await Cart.updateOne({userId : userId} , {totalPrice : newTotal , coupon : couponId})
+            await coupon.update(couponId , {quantity : coupon.quantity - 1})
+            return {
+                success : true ,
+                record : newTotal,
+                code : 200
+            }
+        }else{
+            return {
+                seccess : false ,
+                record : oldTotal,
+                message : "no enough coupons"
+            }
+        }
+    }else {
+        return {
+            success : false ,
+            record : oldTotal,
+            code : 404,
+            message : "not found"
+        }
+    }
+}
 
 module.exports = {
-    // create,
     list,
     get,
     update,
     remove,
     addItem,
     removeItem,
-    flush
+    flush,
+    addCoupon
 }

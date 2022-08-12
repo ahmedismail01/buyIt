@@ -1,18 +1,15 @@
 const repo = require("../../modules/user/repo")
 const hour = 3600000
 const {sendMail} = require('../../helpers/email')
+const { get } = require("moongose/routes")
 
 
-const getAllUsers = async (req,res) => {
-    const users = await repo.list()
-    res.status(201).json({message : "success", users : users})
+const getUser = async(req,res) => {
+    res.json(await repo.get({_id : req.session.user._id}))
 }
 
-
-
-
 const updateUser = async (req,res) => {
-    const userId = req.params.userId
+    const userId = req.session.user._id
     const form = req.body
     const message = await repo.update(userId , form)
     if (message.success) {
@@ -25,16 +22,8 @@ const updateUser = async (req,res) => {
 }
 
 
-
-
-const getUser = async  (req,res) => {
-    const user = await repo.get({_id :req.params.userId})
-    if (user) res.json({message : "success" , user})
-    else res.json({message : "not found"})
-}
-
 const getUserWishlist = async (req,res) => {
-    const user = await repo.get({ _id : req.params.userId})
+    const user = await repo.get({ _id : req.session._id.userId})
     if (user) res.json({message : "success" , wishlist : user.wishlist})
     else res.json({message : "not found"})
 }
@@ -46,8 +35,8 @@ const addCreditCard = async (req,res) => {
 }
 
 const getCreditCards = async (req,res) => {
-    const user = await repo.get({ _id : req.params.userId})
-    if (user) res.json({message : "success" , wishlist : user.creditCards})
+    const user = await repo.get({ _id : req.session.user._id})
+    if (user) res.json({message : "success" , creditCards : user.creditCards})
     else res.json({message : "not found"})
 }
 const addProduct = async (req,res) => {
@@ -71,14 +60,10 @@ const deleteCreditcard = async (req,res) => {
 }
 
 const removeUser = async (req,res) => {
-    res.json(await repo.remove(req.params.userId))
+    res.json(await repo.remove(req.session.user._id))
 }
 
-
-
-
 module.exports = {
-    getAllUsers,
     getUser,
     updateUser,
     addCreditCard,
