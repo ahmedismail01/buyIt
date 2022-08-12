@@ -16,7 +16,6 @@ const productSchema = mongoose.Schema({
         required : false
     }],
     weight : {type : String , required : false},
-    discount : {type : Number , required : false , default : 0},
     quantity : {type : Number , required : true},
     categories : [{
         type : mongoose.Types.ObjectId,

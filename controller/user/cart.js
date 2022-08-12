@@ -1,4 +1,4 @@
-const {get , list, create , remove , update, addItem, removeItem, flush} = require('../../modules/cart/repo')
+const {get , list,addCoupon , remove , update, addItem, removeItem, flush} = require('../../modules/cart/repo')
 const order = require("../../modules/order/repo")
 
 
@@ -7,14 +7,16 @@ const listCarts = async (req,res) => {
 }
 
 const getCart = async (req,res) => {
-    res.json(await get({_id :req.params.orderId}))
+    const userId = req.session.user._id
+    res.json(await get({_id :userId}))
 }
-
 
 
 const updateCart = async (req,res) => {
-    res.json(await update(req.params.orderId,req.body))
+    const userId = req.session.user._id
+    res.json(await update(userId,req.body))
 }
+
 const addItemInCart = async (req,res) => {
     const userId = req.session.user._id
     const productId = req.body.productId
@@ -28,20 +30,14 @@ const removeItemFromCart = async (req,res) => {
     res.json(await removeItem(userId , productId , quantity))
 }
 
-const deleteCart = async (req,res) => {
-    res.json(await remove(req.params.orderId))
-}
-
-const setStatus = async (req,res) => {
-    res.json(await update(req.params.orderId, req.body))
-}
-
-const setShippingAgent = async (req,res) => {
-    res.json(await update(req.params.orderId , req.body))
-}
-
 const flushCart = async (req,res) => {
     res.json(await flush(req.session.user._id))
+}
+
+const couponCode = async (req,res) => {
+    const userId = req.session.user._id
+    const {coupon} = req.body
+    res.json(await addCoupon(coupon , userId))
 }
 
 
@@ -49,10 +45,8 @@ module.exports = {
     listCarts,
     getCart,
     updateCart,
-    deleteCart,
-    setStatus,
-    setShippingAgent,
     addItemInCart,
     removeItemFromCart,
     flushCart,
+    couponCode
 }

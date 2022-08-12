@@ -1,5 +1,5 @@
 const app = require('express').Router()
-const controller = require('../../controller/user/coupon')
+const controller = require('../../controller/admin/coupon')
 const checkAuth = require('../../utils/checkAuth')
 
 

@@ -25,6 +25,7 @@ const deleteProduct = async (req,res) => {
     const messages = await remove(req.params.productId)
     res.json({messages})
 }
+
 const addProduct = async (req,res) => {
     const form = {
         name : req.body.name,

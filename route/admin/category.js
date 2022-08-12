@@ -1,5 +1,5 @@
 const app = require('express').Router()
-const controller = require('../../controller/user/category')
+const controller = require('../../controller/admin/category')
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' }) 
 

@@ -1,7 +1,10 @@
+
+const { sendMail } = require('../../helpers/email')
 const repo = require('../../modules/user/repo')
 const hour = 3600000
 
 const activation = async (req,res) => {
+    console.log(req.session);
     if (req.params.token == req.session.token){
         await repo.update(req.session.user._id , {isActive : true})
         res.json({message : "activated"})
@@ -44,7 +47,7 @@ const register = async (req,res)=> {
     req.session.user = message.record
     req.session.token = theToken
     req.session.save();
-    const email = `http://localhost:8080/api/v1/user/activation/${theToken}`
+    const email = `http://localhost:8080/api/v1/auth/activation/${theToken}`
     const subject = "activate your email"
     const text = "click the link  to activate your email"
     const html = `<a>${email}</a>`
