@@ -16,11 +16,15 @@ const setOrderStatus = async (req,res) => {
         res.json({message : "invalid input"})
     }
 }
-
+const setDeliveryEgent = async(req,res) => {
+    res.json(await update(req.params.orderId , {deliveryEgent : req.body}))
+}
+ 
 
 
 module.exports = {
     getOrder,
     listOrders,
     setOrderStatus,
+    setDeliveryEgent
 }

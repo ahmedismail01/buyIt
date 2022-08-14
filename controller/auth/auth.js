@@ -4,7 +4,6 @@ const repo = require('../../modules/user/repo')
 const hour = 3600000
 
 const activation = async (req,res) => {
-    console.log(req.session);
     if (req.params.token == req.session.token){
         await repo.update(req.session.user._id , {isActive : true})
         res.json({message : "activated"})
