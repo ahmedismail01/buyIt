@@ -1,6 +1,5 @@
-const {get , remove , update} = require('../../modules/order/repo')
+const {get , remove , update,create} = require('../../modules/order/repo')
 const cart = require('../../modules/cart/repo')
-
 
 
 const getOrder = async  (req, res) => {
@@ -21,15 +20,16 @@ const updateOrder = async (req,res) => {
 const createOrder = async (req,res) => {
     const user = req.session.user._id
     const cartObject = await cart.get({userId : user})
+    const shippingFees = cartObject.totalPrice * 0.1
     if (cartObject.items[0]) {
         const form = {
             userId : cartObject.userId,
             items : cartObject.items,
-            shippingFees : cartObject.totalPrice * 0.1,
+            shippingFees : shippingFees,
             shippingAddress : req.session.user.address,
             totalPrice : cartObject.totalPrice + shippingFees
         }
-        await cart.create(form)
+        await create(form)
         await cart.flush(user)
         res.json({success : true})
     }else{

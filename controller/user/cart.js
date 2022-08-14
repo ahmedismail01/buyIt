@@ -1,14 +1,9 @@
-const {get , list,addCoupon , remove , update, addItem, removeItem, flush} = require('../../modules/cart/repo')
-const order = require("../../modules/order/repo")
+const {get ,addCoupon  , update, addItem, removeItem, flush} = require('../../modules/cart/repo')
 
-
-const listCarts = async (req,res) => {
-    res.json(await list())
-}
 
 const getCart = async (req,res) => {
-    const userId = req.session.user._id
-    res.json(await get({_id :userId}))
+    
+    res.json(await get({userId :req.session.user._id}))
 }
 
 
@@ -42,7 +37,6 @@ const couponCode = async (req,res) => {
 
 
 module.exports = {
-    listCarts,
     getCart,
     updateCart,
     addItemInCart,

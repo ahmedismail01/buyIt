@@ -1,11 +1,10 @@
 const app = require('express').Router()
 const controller = require('../../controller/user/cart')
-const checkAuth = require('../../utils/checkAuth')
 
-app.get("/" ,checkAuth, controller.getCart)
-app.put("/" ,checkAuth, controller.updateCart)
-app.post("/addProduct" , checkAuth , controller.addItemInCart)
-app.post("/removeProduct" , checkAuth , controller.removeItemFromCart)
-app.post("/flush" , checkAuth , controller.flushCart)
+app.get("/" , controller.getCart)
+app.post("/addProduct"  , controller.addItemInCart)
+app.post("/removeProduct"  , controller.removeItemFromCart)
+app.post("/flush"  , controller.flushCart)
+app.post('/useCoupon' , controller.couponCode)
 
 module.exports = app

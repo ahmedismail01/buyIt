@@ -103,7 +103,6 @@ const addItem = async (cart , productId , quantity) => {
 
 const removeItem = async (cart , productId , quantity) => {
     const isCartExists = await isExists({userId : cart})
-    console.log(isCartExists)
     const productObject = await product.get({_id : productId})
     if (isCartExists.record) {
         const isProductInCart = await isItemInCart(isCartExists.record , productId)

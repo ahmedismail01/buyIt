@@ -4,8 +4,8 @@ const checkAuth = require('../../utils/checkAuth')
 
  
 // app.get("/getAllUsers" ,checkAuth,userController.getAllUsers)
-app.get("/getUser/" , checkAuth,userController.getUser)
-app.post("/update/" , checkAuth,userController.updateUser)
+app.get("/getUser" , checkAuth,userController.getUser)
+app.post("/update" , checkAuth,userController.updateUser)
 app.post("/addCreditCard" , checkAuth,userController.addCreditCard)
 app.get("/getUserWishlist/" ,checkAuth, userController.getUserWishlist)
 app.get("/getUserCreditCards/" ,checkAuth ,userController.getCreditCards)
