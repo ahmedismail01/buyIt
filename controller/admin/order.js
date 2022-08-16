@@ -9,15 +9,8 @@ const getOrder = async  (req, res) => {
     res.json(await get({_id : req.params.orderId}))
 }
 
-const setOrderStatus = async (req,res) => {
-    if (req.body.status == "assigned"){
-        res.json(await update(req.params.orderId ,{status : "assigned"}))
-    }else{
-        res.json({message : "invalid input"})
-    }
-}
 const setDeliveryEgent = async(req,res) => {
-    res.json(await update(req.params.orderId , {deliveryEgent : req.body}))
+    res.json(await update(req.params.orderId , {deliveryEgent : req.body,status : "assigned"}))
 }
  
 
@@ -25,6 +18,5 @@ const setDeliveryEgent = async(req,res) => {
 module.exports = {
     getOrder,
     listOrders,
-    setOrderStatus,
     setDeliveryEgent
 }
