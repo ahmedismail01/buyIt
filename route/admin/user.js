@@ -1,12 +1,10 @@
 const app = require('express').Router()
 const userController = require('../../controller/admin/user')
-const checkAuth = require('../../utils/checkAuth')
-const validator = require('../../utils/common.validate')
-const {register,login} = require('../../helpers/userValidation')
-
+const checkRole = require('../../utils/checkRole')
+const endPoints = require('../../helpers/endPoints')
  
-app.get("/getAllUsers" ,checkAuth,userController.getAllUsers)
-app.get("/getUser/:userId" , checkAuth,userController.getUser)
-app.delete("/:userId" , checkAuth , userController.removeUser)
+app.get("/getAllUsers" ,checkRole(endPoints.GET_ALL_USERS),userController.getAllUsers)
+app.get("/getUser/:userId" ,checkRole(endPoints.GET_USER_BY_ID),userController.getUser)
+app.delete("/:userId" ,checkRole(endPoints.DELETE_USER_BY_ID), userController.removeUser)
 
 module.exports = app

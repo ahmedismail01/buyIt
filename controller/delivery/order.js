@@ -9,9 +9,9 @@ const getOrder = async(req,res) => {
     res.json(await get({deliveryEgent : req.session.user._id ,_id :req.params.orderId }))
 }
 
-const updateOrder = async (req,res) => {
-    const order = get({userId : req.session.user._id})
-    res.json(await update(order._id , req.body))
+const setOrderStatus = async (req,res) => {
+    const order = get({_id : req.params.orderId})
+    res.json(await update(order._id , {status : req.body.status}))
 }
 
 
@@ -19,5 +19,5 @@ const updateOrder = async (req,res) => {
 module.exports = {
     listOrders,
     getOrder,
-    updateOrder,
+    setOrderStatus,
 }
