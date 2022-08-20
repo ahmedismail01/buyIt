@@ -1,6 +1,6 @@
 const app = require('express').Router()
 const userController = require('../../controller/admin/user')
-const checkRole = require('../../utils/checkRole')
+const {checkRole} = require('../../utils/checkRole')
 const endPoints = require('../../helpers/endPoints')
  
 app.get("/getAllUsers" ,checkRole(endPoints.GET_ALL_USERS),userController.getAllUsers)

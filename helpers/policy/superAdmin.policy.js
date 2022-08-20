@@ -7,7 +7,6 @@ module.exports = [
     endPoints.ADD_PRODUCT,
     endPoints.DELETE_CATEGORY,
     endPoints.DELETE_USER,
-    endPoints.GET_ALL_CATEGORY,
     endPoints.GET_ALL_ORDERS,
     endPoints.GET_ALL_USERS,
     endPoints.GET_ALL_PRODUCTS,
@@ -20,5 +19,6 @@ module.exports = [
     endPoints.GET_PRODUCT,
     endPoints.GET_PRODUCT_BY_CATEGORY,
     endPoints.GET_USER,
-    endPoints.GET_WISHLIST
+    endPoints.GET_WISHLIST,
+    endPoints.GET_ALL_CATEGORIES
 ]

@@ -2,7 +2,7 @@ const app = require('express').Router()
 const controller = require('../../controller/admin/category')
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' }) 
-const checkRole = require('../../utils/checkRole')
+const {checkRole} = require('../../utils/checkRole')
 const endPoints = require('../../helpers/endPoints')
 
 app.get('/',checkRole(endPoints.GET_ALL_CATEGORIES),controller.listCategories)

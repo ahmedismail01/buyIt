@@ -26,7 +26,6 @@ const remove = async (categoryId) => {
 }
 
 const update = async (categoryId , form) => {
-    
     const category = await isExists({_id : categoryId})
     if(category.success) {
         await Category.findByIdAndUpdate({_id : categoryId} , form)
