@@ -10,7 +10,16 @@ const getOrder = async  (req, res) => {
 }
 
 const setDeliveryEgent = async(req,res) => {
-    res.json(await update(req.params.orderId , {deliveryEgent : req.body,status : "assigned"}))
+    const order = get({_id : req.params.orderId})
+    if(order.status == "pending"){
+        res.json(await update(req.params.orderId , {shippingAgent : req.body.deliveryEgent,status : "assigned"}))
+    }else{
+        res.json({
+                success : false , 
+                message : "there is already a shipping egent for this order"
+            })
+    }
+    
 }
  
 

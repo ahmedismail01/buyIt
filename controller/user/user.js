@@ -23,7 +23,7 @@ const updateUser = async (req,res) => {
 
 
 const getUserWishlist = async (req,res) => {
-    const user = await repo.get({ _id : req.session._id.userId})
+    const user = await repo.get({ _id : req.session.user._id})
     if (user) res.json({message : "success" , wishlist : user.wishlist})
     else res.json({message : "not found"})
 }

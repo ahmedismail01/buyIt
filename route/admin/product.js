@@ -2,7 +2,7 @@ const app = require('express').Router()
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
 const controller = require('../../controller/admin/product')
-const checkRole = require('../../utils/checkRole')
+const {checkRole} = require('../../utils/checkRole')
 const endPoints = require('../../helpers/endPoints')
 
 

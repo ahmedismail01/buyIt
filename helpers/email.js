@@ -17,5 +17,4 @@ exports.sendMail = (reciever,subject,text,html) => {
         text,
         html
     })
-    console.log("message sent",info.messageId)
 }

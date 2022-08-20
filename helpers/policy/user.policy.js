@@ -20,7 +20,8 @@ module.exports = [
     endPoints.DELETE_ORDER,
     endPoints.GET_ORDER,
     endPoints.UPDATE_ORDER,
-    endPoints.GET_ALL_CATEGORIES,
     endPoints.GET_CATEGORY,
-    endPoints.USE_COUPON
+    endPoints.USE_COUPON,
+    endPoints.GET_MY_ORDERS,
+    endPoints.GET_ALL_CATEGORIES
 ]

@@ -7,7 +7,6 @@ module.exports = [
     endPoints.ADD_PRODUCT,
     endPoints.DELETE_CATEGORY,
     endPoints.DELETE_USER,
-    endPoints.GET_ALL_CATEGORIES,
     endPoints.GET_ALL_ORDERS,
     endPoints.GET_ALL_USERS,
     endPoints.GET_ALL_PRODUCTS,
@@ -21,5 +20,9 @@ module.exports = [
     endPoints.CREATE_COUPON,
     endPoints.UPDATE_COUPON,
     endPoints.SET_DELIVERY_EGENT,
-    endPoints.GET_USER_BY_ID
+    endPoints.GET_USER_BY_ID,
+    endPoints.GET_ALL_CATEGORIES,
+    endPoints.GET_ORDER,
+    endPoints.GET_PRODUCT,
+    endPoints.REMOVE_PRODUCT
 ]

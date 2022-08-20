@@ -12,7 +12,7 @@ const listCoupons = async (req,res) => {
 const getCoupon = async (req,res) => {
     const object = await get({_id : req.params.couponId})
     if (object) res.json(object)
-    res.json({message : "not found"})
+    else res.json({message : "not found"})
 }
 
 const removeCoupon = async (req,res) => {
